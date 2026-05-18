@@ -4,7 +4,7 @@ using System.Text;
 using NotificationService.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace NotificationService.Infrastructure.Persistance;
+namespace NotificationService.Infrastructure.Persistence;
 public class AppDbContext : DbContext
 {
     // Setting up DB context to manage notifications in the database.

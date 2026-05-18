@@ -1,6 +1,5 @@
 using Microsoft.EntityFrameworkCore;
 using NotificationService.Application.Abstractions;
-using NotificationService.Infrastructure.Persistance;
 using NotificationService.Infrastructure.Persistence;
 using NotificationService.Infrastructure.Repositories;
 

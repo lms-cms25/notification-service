@@ -4,7 +4,7 @@ using System.Text;
 using Microsoft.EntityFrameworkCore;
 using NotificationService.Application.Abstractions;
 using NotificationService.Domain.Entities;
-using NotificationService.Infrastructure.Persistance;
+using NotificationService.Infrastructure.Persistence;
 
 namespace NotificationService.Infrastructure.Repositories;
 public class NotificationRepository : INotificationRepository
