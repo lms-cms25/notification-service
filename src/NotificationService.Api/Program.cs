@@ -5,39 +5,56 @@ using NotificationService.Infrastructure.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Controllers
 builder.Services.AddControllers();
 
+// Swagger
 builder.Services.AddEndpointsApiExplorer();
-
 builder.Services.AddSwaggerGen();
 
+// Db
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlServer(
-        builder.Configuration.GetConnectionString("DefaultConnection")
-    ));
+{
+    var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
+    if (string.IsNullOrEmpty(connectionString))
+        throw new Exception("Missing DefaultConnection in configuration");
+
+    options.UseSqlServer(connectionString);
+});
+
+// DI
 builder.Services.AddScoped<INotificationRepository, NotificationRepository>();
 
+// CORS
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowFrontend", policy =>
+    options.AddPolicy("AllowAll", policy =>
     {
         policy
+            .AllowAnyOrigin()
             .AllowAnyHeader()
-            .AllowAnyMethod()
-            .AllowAnyOrigin();
+            .AllowAnyMethod();
     });
 });
 
 var app = builder.Build();
 
-app.UseSwagger();
+// dev only swagger
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
 
-app.UseSwaggerUI();
+// Simple health check
+app.MapGet("/", () => Results.Ok("Notification Service is running"));
 
 app.UseHttpsRedirection();
 
-app.UseCors("AllowFrontend");
+app.UseCors("AllowAll");
+
+app.UseAuthorization();
 
 app.MapControllers();
 
