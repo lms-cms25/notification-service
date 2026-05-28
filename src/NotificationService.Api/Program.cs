@@ -17,8 +17,10 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 {
     var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
-    if (string.IsNullOrEmpty(connectionString))
-        throw new Exception("Missing DefaultConnection in configuration");
+    if (string.IsNullOrWhiteSpace(connectionString))
+    {
+        throw new Exception("Missing DefaultConnection connection string");
+    }
 
     options.UseSqlServer(connectionString);
 });
@@ -48,7 +50,15 @@ if (app.Environment.IsDevelopment())
 }
 
 // Simple health check
-app.MapGet("/", () => Results.Ok("Notification Service is running"));
+app.MapGet("/health", () =>
+{
+    return Results.Ok(new
+    {
+        service = "Notification Service",
+        status = "running",
+        time = DateTime.UtcNow
+    });
+});
 
 app.UseHttpsRedirection();
 
