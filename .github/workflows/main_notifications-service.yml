@@ -43,12 +43,11 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: .net-app
+          path: myapp
       
       - name: Deploy to Azure Web App
-        id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
         with:
           app-name: 'notifications-service'
-          slot-name: 'Production'
-          package: .
+          package: myapp
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_FA24DFA120B64384B1D792F9476327FA }}
