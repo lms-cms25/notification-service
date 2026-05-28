@@ -25,7 +25,7 @@ public class NotificationsController : ControllerBase
         await _repository.AddAsync(notification);
         return Ok(notification);
     }
-    [HttpGet]
+    [HttpGet("{userId}")]
     public async Task<IActionResult> Get(string userId)
     {
         var notifications = await _repository.GetByUserIdAsync(userId);
