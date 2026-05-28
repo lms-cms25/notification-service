@@ -31,4 +31,14 @@ public class NotificationsController : ControllerBase
         var notifications = await _repository.GetByUserIdAsync(userId);
         return Ok(notifications);
     }
+    [HttpGet("test")]
+    public IActionResult Test()
+    {
+        return Ok(new
+        {
+            message = "Notification Service is working",
+            status = "OK",
+            time = DateTime.UtcNow
+        });
+    }
 }
